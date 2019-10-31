@@ -52,4 +52,4 @@ function helpCommand(arguments, receivedMessage){
     }
 }
 // THE BOT'S TOKEN 
-client.login("NjM5NDg0MjUzODU1NDE2MzUx.XbsgAw.uXi_AJG5Cm2_XOHjDgBfSFiS-0c")
+client.login("token string here")
