@@ -10,6 +10,6 @@ My very own creations
 
 
 
-References
-[Dev Dungeon](https://www.devdungeon.com/content/javascript-discord-bot-tutorial) 
-[Official Docs](https://discord.js.org/#/docs/main/stable/general/welcome)
+References :
+- [Dev Dungeon](https://www.devdungeon.com/content/javascript-discord-bot-tutorial) 
+- [Official Docs](https://discord.js.org/#/docs/main/stable/general/welcome)
