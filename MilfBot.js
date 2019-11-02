@@ -17,7 +17,7 @@ function processCommand(receivedMessage) {
 
     if (primaryCommand === "suggestAnime"){
         var animeList = client.channels.get("638749451758075904")
-        suggest(animeList, receivedMessage)
+        suggest(animeList, receivedMessage, arguments)
     }
 
     if (primaryCommand === "suggestManga"){
@@ -30,35 +30,56 @@ function processCommand(receivedMessage) {
             return
         }else{
             receivedMessage.channel.bulkDelete(20).then(() => {
-            receivedMessage.channel.send("I've deleted our little lewd chat, Darling! *wink* *wink*").then(msg => msg.delete(3000))
+            receivedMessage.channel.send("I've deleted our little lewd conversation, Darling! *wink* *wink*").then(msg => msg.delete(3000))
             })
         }
     }
 
     if (primaryCommand == "inviteEveryoneOver"){
         receivedMessage.guild.members.forEach(member => {
-            if (member.id != client.user.id && !member.user.bot) member.send("Come Over Bois");
-        });
+            if (member.id != client.user.id && !member.user.bot && member.id != receivedMessage.member.id )
+                member.send("Come over, Pumpkin!")
+        })
     }
 }
 
 function helpCommand(arguments, receivedMessage){
     if (arguments.length == 0){
-        receivedMessage.channel.send("Help with what? Little boy")
+        receivedMessage.channel.send("Tell me what you need, Sugar!")
     }else{
-        receivedMessage.channel.send("THE BATH IS READY!")
+        receivedMessage.channel.send("THE BATH IS READY, LET'S GET TO IT!")
     }
 }
 
-function suggest(List, receivedMessage){
-      
-    List.fetchMessages().then( msgs => { // Get messages to check
+function suggest(List, receivedMessage, arguments){
+    if (arguments.length == 0){  
+        List.fetchMessages().then( msgs => { // Get messages to check
 
-    let msglog = msgs.array() // Make an array with all the messages fetched  
-    // Randomize the Array of content          
-    let rand = msglog[Math.floor(Math.random() * msglog.length)]
-    receivedMessage.channel.send(rand.content)
-    })
+            let msglog = msgs.array() // Make an array with all the messages fetched  
+            // Randomize the Array of content          
+            let rand = msglog[Math.floor(Math.random() * msglog.length)]
+            receivedMessage.channel.send(rand.content)
+        })
+    }else{
+        let genre = arguments[0]
+        List.fetchMessages().then( msgs => { // Get messages to check
+
+            let msglog = msgs.array() 
+            var msglogContent = []
+            for(var i in msglog){
+                if(msglog[i].content.includes(genre)){               
+                    
+                    msglogContent.push(msglog[i].content)
+                }              
+            }
+            if(msglogContent.length == 0){
+                receivedMessage.channel.send("Ara! Ara! looks like no such genre exist, dear.").then(msg => {msg.delete(2000)})
+            }else{
+                let rand = msglogContent[Math.floor(Math.random() * msglogContent.length)]
+            receivedMessage.channel.send(rand).then(msg=> {msg.delete(14000)})
+            }  
+        })
+    }
 }
 
 // function to check duplicate message
@@ -116,11 +137,11 @@ client.on('message', (receivedMessage) => {
     }
     
     if (receivedMessage.content.toUpperCase().includes('ONEE SAN')){
-        var responses = ["Ara! Ara! " + receivedMessage.author.toString() + " kun!", "~Damee!!!", "Come to mama~ let me succ you dry!", "I'm so lonely " + receivedMessage.author.toString() + " kun!"]
+        var responses = ["Ara! Ara! " + receivedMessage.author.toString() + " kun!", "Dame!", "Come to mama~ let me succ you dry!", "I was feelin' so lonely " + receivedMessage.author.toString() + " kun!", "~Itadakimaasu!", "Sugoi kirei!", "Kimochi ii...", " Ara! Ara! **drools*"]
 
         let randomResponse = responses[Math.floor(Math.random() * responses.length)]
         receivedMessage.channel.send(randomResponse)
-        // receivedMessage.react("❤")
+        receivedMessage.react("❤")
     }    
     
     if (receivedMessage.content.startsWith("!")) {  
@@ -141,4 +162,4 @@ client.on('message', (receivedMessage) => {
 })
 
 // THE BOT'S TOKEN 
-client.login("NjM5NDg0MjUzODU1NDE2MzUx.Xbw2Fw.TDiWnHf-SFDEWLs1iS0r3FlhKoo")
+client.login("NjM5NDg0MjUzODU1NDE2MzUx.Xb2QOQ.223P0W6sUsrVeTutmq68VDvCglc")
