@@ -137,7 +137,7 @@ client.on('message', (receivedMessage) => {
     }
     
     if (receivedMessage.content.toUpperCase().includes('ONEE SAN')){
-        var responses = ["Ara! Ara! " + receivedMessage.author.toString() + " kun!", "Dame!", "Come to mama~ let me succ you dry!", "I was feelin' so lonely " + receivedMessage.author.toString() + " kun!", "~Itadakimaasu!", "Sugoi kirei!", "Kimochi ii...", " Ara! Ara! **drools*"]
+        var responses = ["Ara! Ara! " + receivedMessage.author.toString() + " kun!", "Dame!", "Come to mama~ let me succ you dry!", "I was feelin' so lonely " + receivedMessage.author.toString() + " kun!", "~Itadakimaasu!", "Sugoi kirei!", "Kimochi ii...", " Ara! Ara! **drools*", "O Kawaii koto~", "Kawaii!"]
 
         let randomResponse = responses[Math.floor(Math.random() * responses.length)]
         receivedMessage.channel.send(randomResponse)
