@@ -1,0 +1,15 @@
+Here's what I can do, Goshujin-sama.
+
+Ara ara responses :
+ Type any message with @my_name and nee san in it and I'll reply.
+
+commands :
+ Suggestions :
+
+  !suggestAnime genre
+  !suggestManga genre
+  !suggestHentai genre
+
+  You can ditch the genre and in that case, umm... I'll get you my favourite... Also, the whole list is full of my favourites Tee hee~
+
+!invite @user_name - I'll personally invite them over at your command.
