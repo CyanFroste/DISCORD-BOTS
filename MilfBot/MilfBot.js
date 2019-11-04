@@ -21,31 +21,32 @@ function processCommand(receivedMessage) {
         helpCommand(arguments, receivedMessage)
     }
 
-    if (primaryCommand === "suggestAnime"){
+    if (primaryCommand === "ping"){
+        botLatency(receivedMessage)
+    }
+
+    if (primaryCommand === "uptime"){
+        botUptime(receivedMessage)
+    }
+
+    if (primaryCommand === "anime"){
         var animeList = client.channels.get("638749451758075904")
         suggest(animeList, receivedMessage, arguments)
     }
 
-    if (primaryCommand === "suggestManga"){
+    if (primaryCommand === "manga"){
         var mangaList = client.channels.get("639117212052881449")
         suggest(mangaList, receivedMessage, arguments)
     }
 
-    if (primaryCommand === "suggestHentai"){
+    if (primaryCommand === "hentai"){
         var hentaiList = client.channels.get("638756666279591936")
         suggest(hentaiList, receivedMessage, arguments)
-        setTimeout(function(){receivedMessage.channel.send("But, why Hentai when you have me...? *sad noises*")}, 1000)
-    }
-    
+        setTimeout(function(){receivedMessage.channel.send("But, why Hentai when you have me...? :cry: *sad noises*")}, 2000)
+    }    
 
-    if (primaryCommand === "clearEarlyChat"){
-        if (receivedMessage.channel.id.toString() === "638749451758075904" || receivedMessage.channel.id.toString() === "639117212052881449" || receivedMessage.channel.id.toString() === "638756666279591936"){
-            return
-        }else{
-            receivedMessage.channel.bulkDelete(20).then(() => {
-            receivedMessage.channel.send("I've deleted our little lewd conversation, Darling! *wink* *wink*").then(msg => msg.delete(3000))
-            })
-        }
+    if (primaryCommand === "clearEarlyChatBy"){
+        deleteEarlyMessages(receivedMessage, arguments)
     }
 
     if (primaryCommand == "invite"){
@@ -53,10 +54,51 @@ function processCommand(receivedMessage) {
     }
 }
 
+function deleteEarlyMessages(receivedMessage, arguments){
+    if (arguments.length == 0){
+        receivedMessage.channel.send("We aren't deleting our lewd little conversation, Darling!").then(msg => msg.delete(4000))
+    }else{
+
+        if (receivedMessage.channel.id.toString() === "638749451758075904" || receivedMessage.channel.id.toString() === "639117212052881449" || receivedMessage.channel.id.toString() === "638756666279591936"){
+            return
+        }else{
+            receivedMessage.channel.bulkDelete(parseInt(arguments[0])).then(() => {
+            receivedMessage.channel.send("I've deleted our lewd little conversation, Darling! :smirk: ").then(msg => msg.delete(4000))
+            })
+        }
+    }
+}
+
+function botUptime(receivedMessage){
+    let totalSeconds = (client.uptime / 1000)
+    let days = Math.floor(totalSeconds / 86400)
+    let hours = Math.floor(totalSeconds / 3600)
+    totalSeconds %= 3600
+    let minutes = Math.floor(totalSeconds / 60)
+    let seconds = totalSeconds % 60
+
+    let uptime = `I've been alive for \`${days}\` days, \`${hours}\` hours, \`${minutes}\` minutes and \`${seconds}\` seconds :persevere: `
+    receivedMessage.channel.send(uptime).then( msg => {
+        msg.delete(4000)
+        receivedMessage.delete(4000)
+    })
+}
+
+
+function botLatency(receivedMessage){
+    receivedMessage.channel.send("Pinging...").then( msg => {
+        let ping = msg.createdTimestamp - receivedMessage.createdTimestamp
+        msg.edit(`\`${ping}\`ms ~Boing!`)
+        msg.delete(4000)
+        receivedMessage.delete(4000)
+    })
+   
+}
+
 
 function inviteViaBot(receivedMessage, arguments){
     if (arguments.length == 0){
-        receivedMessage.channel.send("Who do I invite now? *sadface*").then(msg => msg.delete(3000))
+        receivedMessage.channel.send("Who do I invite now? *sadface*").then(msg => msg.delete(4000))
     }else{
         if (arguments[0].toLowerCase() === "all"){
             receivedMessage.guild.members.forEach(member => {
@@ -93,19 +135,19 @@ function suggest(List, receivedMessage, arguments){
             receivedMessage.channel.send(rand.content)            
         })
     }else{
-        let genre = arguments[0]
+        let genre = arguments[0].toLowerCase()
         List.fetchMessages().then( msgs => { // Get messages to check
 
             let msglog = msgs.array() 
             var msglogContent = []
             for(var i in msglog){
-                if(msglog[i].content.includes(genre)){               
+                if(msglog[i].content.toLowerCase().includes(genre)){               
                     
                     msglogContent.push(msglog[i].content)
                 }              
             }
             if(msglogContent.length == 0){
-                receivedMessage.channel.send("Ara! Ara! looks like no such genre exist, dear.").then(msg => {msg.delete(2000)})
+                receivedMessage.channel.send("Ara! Ara! looks like no such genre exist, dear.").then(msg => {msg.delete(4000)})
             }else{
                 let rand = msglogContent[Math.floor(Math.random() * msglogContent.length)]
             receivedMessage.channel.send("Ora~ Look What I found!\n")    
@@ -122,15 +164,15 @@ function checkEarlierPostLink(receivedMsg, array) {
     let postLink = fullPostArray[fullPostArray.length - 1]    
     postLink = postLink.slice(postLink.indexOf("https"))  
     // console.log(postLink)
+
     let count = 0
     for (var temp in array) {  
-        // console.log(array[temp].content)   
-        
+        // console.log(array[temp].content)       
         let catalogArray = array[temp].content.split(" ")
         let matchLink = catalogArray[catalogArray.length - 1]
         matchLink = matchLink.slice(matchLink.indexOf("https"))
         // console.log(matchLink)
-        if (postLink === matchLink){
+        if (matchLink.includes(postLink)){
             // receivedMsg.channel.send("Ara! Ara! Post already exists!")                
             count++
         }  
@@ -140,7 +182,6 @@ function checkEarlierPostLink(receivedMsg, array) {
     else
         return true
 }
-
 
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag)
@@ -169,10 +210,10 @@ client.on('message', (receivedMessage) => {
         return
     }
     
-    if (receivedMessage.content.toUpperCase().includes('NEE SAN') && receivedMessage.mentions.users.first().id === client.user.id){
+    if (receivedMessage.content.toUpperCase().includes('NEE SAN') || receivedMessage.content.includes(client.user.id).toString()){
         var responses = ["Ara! Ara! " + receivedMessage.author.toString() + " kun!", "I was feelin' so lonely " + receivedMessage.author.toString() + " kun!"]
         responseArray = responseArray.concat(responses)
-        console.log(responseArray)
+        // console.log(responseArray)
         let randomResponse = responseArray[Math.floor(Math.random() * responseArray.length)]
         receivedMessage.channel.send(randomResponse)
         receivedMessage.react("❤")
@@ -189,7 +230,7 @@ client.on('message', (receivedMessage) => {
             let dupeCheck = checkEarlierPostLink(receivedMessage, msglog)    
             if(dupeCheck){
                 receivedMessage.delete()
-                receivedMessage.channel.send("Ara! Ara! Seems like the post already exist!").then( botMsg =>{ botMsg.delete(3000) } )
+                receivedMessage.channel.send("Ara! Ara! Seems like the post already exist!").then( botMsg =>{ botMsg.delete(4000) } )
             }
         }) 
     }

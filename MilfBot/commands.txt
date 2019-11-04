@@ -1,15 +1,18 @@
 Here's what I can do, Goshujin-sama.
 
 Ara ara responses :
- Type any message with @my_name and nee san in it and I'll reply.
+ Type any message with @my_name and nee san in it and I'll reply... :smirk:
 
 commands :
- Suggestions :
+ !ping - I'll show your latency
+ !uptime - How long since my birth in this isekai :laughing:
 
-  !suggestAnime genre
-  !suggestManga genre
-  !suggestHentai genre
+ Suggestions and Search
 
-  You can ditch the genre and in that case, umm... I'll get you my favourite... Also, the whole list is full of my favourites Tee hee~
+  !anime genre / (part of) name
+  !manga genre / (part of) name
+  !hentai genre / (part of) name
 
-!invite @user_name - I'll personally invite them over at your command.
+  You can ditch the genre and in that case, umm... I'll get you one of my favourites... Also, the whole list is full of my favourites Tee hee~
+
+ !invite @user_name - I'll personally invite them over at your command.
