@@ -7,7 +7,7 @@ var responseArray = text.split("\n")
 text = fs.readFileSync("./commands.txt").toString()
 var commands = text
 
-var TOKEN = ""
+var TOKEN = "NjM5NDg0MjUzODU1NDE2MzUx.XcFuyA.5Ylhbg1Y3A_byYEziwNkCsjtn7I"
 
 function processCommand(receivedMessage) {
     
@@ -209,28 +209,35 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user){
         return
     }
-    
-    if (receivedMessage.content.toUpperCase().includes('NEE SAN') || receivedMessage.content.includes(client.user.id).toString()){
-        var responses = ["Ara! Ara! " + receivedMessage.author.toString() + " kun!", "I was feelin' so lonely " + receivedMessage.author.toString() + " kun!"]
-        responseArray = responseArray.concat(responses)
-        // console.log(responseArray)
-        let randomResponse = responseArray[Math.floor(Math.random() * responseArray.length)]
-        receivedMessage.channel.send(randomResponse)
-        receivedMessage.react("❤")
-    }    
-    
+    try{
+        if (receivedMessage.content.toUpperCase().includes('NEE SAN') || receivedMessage.mentions.users.first().id === client.user.id.toString() ){
+            let tempResponseArray = []
+            let responses = ["Ara! Ara! " + receivedMessage.author.toString() + " kun!", "I was feelin' so lonely " + receivedMessage.author.toString() + " kun!"]
+            tempResponseArray = responseArray.concat(responses)
+            // console.log(tempResponseArray)
+            let randomResponse = tempResponseArray[Math.floor(Math.random() * tempResponseArray.length)]
+            
+            receivedMessage.channel.send(randomResponse)
+            receivedMessage.react("❤")
+            
+            
+        }    
+    }catch(error){
+        // console.log("It wasn't for me...")        
+    }
+
     if (receivedMessage.content.startsWith("!")) {  
         processCommand(receivedMessage)
     }
     
-    if (receivedMessage.channel.id.toString() == "638749451758075904" || receivedMessage.channel.id.toString() == "639117212052881449"){
+    if (receivedMessage.channel.id.toString() == "638749451758075904" || receivedMessage.channel.id.toString() == "639117212052881449" || receivedMessage.channel.id.toString() == "638756666279591936"){
         receivedMessage.channel.fetchMessages().then( msgs => { 
             var msglog = msgs.array()
             msglog = msglog.slice(1)
             let dupeCheck = checkEarlierPostLink(receivedMessage, msglog)    
             if(dupeCheck){
                 receivedMessage.delete()
-                receivedMessage.channel.send("Ara! Ara! Seems like the post already exist!").then( botMsg =>{ botMsg.delete(4000) } )
+                receivedMessage.channel.send("Ara! Ara! Seems like the post already exist or the post's format is incorrect!").then( botMsg =>{ botMsg.delete(4000) } )
             }
         }) 
     }
