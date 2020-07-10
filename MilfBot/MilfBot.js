@@ -7,7 +7,7 @@ var responseArray = text.split("\n")
 text = fs.readFileSync("./commands.txt").toString()
 var commands = text
 
-var TOKEN = "NjM5NDg0MjUzODU1NDE2MzUx.XcFuyA.5Ylhbg1Y3A_byYEziwNkCsjtn7I"
+var TOKEN = ""
 
 function processCommand(receivedMessage) {
     
